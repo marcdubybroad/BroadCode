@@ -2,6 +2,7 @@
 
 -- drop the temop new variant table if it exists
 drop table if exists new_variants;
+drop table if exists diff_variants;
 
 
 -- create the variant table
@@ -35,8 +36,12 @@ insert into diff_variant (var_id, db_snp_id, chromosome, position)
 create table new_variants select com.VAR_ID as var_id, com.DBSNP_ID as db_snp_id, com.CHROM as chromosome, com.POS as position from common_dv1 com left outer join variant var on com.VAR_ID = var.var_id and var.id is null
 
 -- insert the new variants into the variant table, different created_date
-
--- 
+insert into variant (var_id, var_id_first_characters, db_snp_id, db_snp_id_first_characters, position, chromosome, version)
+    select var_id, substring(var_id, 1, 5), db_snp_id, substring(db_snp_id, 1, 4), position, chromosome, 0 from diff_variant;
+    
+-- drop the temop new variant table if it exists to save space
+drop table if exists new_variants;
+drop table if exists diff_variants;
 
 
 
