@@ -12,7 +12,7 @@ BEGIN
     
     -- set statement variables
 --    set @delete_statement = 'delete from ';
-    set @where_statement = ' where VAR_ID like \'20_%\'';
+    set @where_statement = ' where VAR_ID like \'8_%\'';
     set @drop_statement = 'drop table ';
     set @rename_statement = 'rename table ';
     set @create_statement = 'create table ';
