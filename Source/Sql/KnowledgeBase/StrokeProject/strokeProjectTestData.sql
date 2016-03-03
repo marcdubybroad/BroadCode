@@ -67,9 +67,11 @@ from DATASET where lower(ID) like 'gwas%mdv2';
 
 -- seed data for testing
 -- dummy test
-update common_dv1 set dbsnp_id = 'rs17346073' where var_id = '20_3684426_C_T';
+-- update common_dv1 set closest_gene = 'HDAC9' where closest_gene = 'ZMAT4';
 
-update ExSeq_39k_dv9 set VAR_ID = 'rs17346073' where VAR_ID = '20_3684426_C_T';
-update ExSeq_39k_eu_dv9 set VAR_ID = 'rs17346073' where VAR_ID = '20_3684426_C_T';
-update ExSeq_39k_dv9__STRK set VAR_ID = 'rs17346073' where VAR_ID = '20_3684426_C_T';
-update ExSeq_39k_eu_dv9__STRK set VAR_ID = 'rs17346073' where VAR_ID = '20_3684426_C_T';
+--update common_dv1 set dbsnp_id = 'rs17346073' where var_id = '20_3684426_C_T';
+
+--update ExSeq_39k_dv9 set VAR_ID = 'rs17346073' where VAR_ID = '20_3684426_C_T';
+--update ExSeq_39k_eu_dv9 set VAR_ID = 'rs17346073' where VAR_ID = '20_3684426_C_T';
+--update ExSeq_39k_dv9__STRK set VAR_ID = 'rs17346073' where VAR_ID = '20_3684426_C_T';
+--update ExSeq_39k_eu_dv9__STRK set VAR_ID = 'rs17346073' where VAR_ID = '20_3684426_C_T';
