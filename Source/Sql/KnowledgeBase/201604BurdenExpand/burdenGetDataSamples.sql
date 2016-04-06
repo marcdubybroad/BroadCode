@@ -10,8 +10,12 @@ create table SAMPLES_DATASET select * from DATASET;
 delete from SAMPLES_DATASET;
 
 -- add in the samples rows
-insert into SAMPLES_DATASET (ID, VER, PARENT, TBL, SORT) values('SAMPLES_13k_mdv2', 'mdv2', 'Root', 'SAMPLE_13k', 60);
-insert into SAMPLES_DATASET (ID, VER, PARENT, TBL, SORT) values('SAMPLES_26k_mdv2', 'mdv2', 'Root', 'SAMPLE_26k', 60);
+insert into SAMPLES_DATASET (ID, EXP, VER, PARENT, TBL, SORT) values('samples_13k_mdv2', 'ExSeq_13k', 'mdv2', 'Root', 'SAMPLE_13k', 40);
+insert into SAMPLES_DATASET (ID, EXP, VER, PARENT, TBL, SORT) values('samples_26k_mdv3', 'ExSeq_16k', 'mdv3', 'Root', 'SAMPLE_26k', 50);
+
+-- add in subjcts, controls etc
+update SAMPLES_DATASET da set da.CASES = 6514, da.CONTROLS = 6440, da.SUBJECTS = 12954 where da.ID = 'samples_13k_mdv2';
+update SAMPLES_DATASET da set da.CASES = 10234, da.CONTROLS = 13267, da.SUBJECTS = 23501 where da.ID = 'samples_26k_mdv3';
 
 
 -- PROP
@@ -26,8 +30,8 @@ delete from SAMPLES_PROP;
 
 -- add in the samples rows
 insert into SAMPLES_PROP
-select column_name, 'FALSE', 'NULL', column_name, if(column_type = 'text', 'STRING', if(column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
-    FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_13k';
+select column_name, 'FALSE', 'TRUE', column_name, if(column_type = 'text', 'STRING', if(column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
+    FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_13k' and column_name != 'ID';
 
 
 
