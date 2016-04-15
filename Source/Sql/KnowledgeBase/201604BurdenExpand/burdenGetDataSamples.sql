@@ -23,7 +23,8 @@ insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT
 -- insert into SAMPLES_DATASET (ID, EXP, VER, PARENT, TBL, SORT) values('samples_13k_mdv2', 'ExSeq_13k', 'mdv2', 'Root', 'SAMPLE_13k', 40);
 -- insert into SAMPLES_DATASET (ID, EXP, VER, PARENT, TBL, SORT) values('samples_26k_mdv3', 'ExSeq_16k', 'mdv3', 'Root', 'SAMPLE_26k', 50);
 insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT, CASES, CONTROLS, SUBJECTS) values('samples_13k_mdv2', 'ExSeq_13k', 'mdv2', '13k', 'ExSeq', 'Mixed', 'Root', 'SAMPLE_13k', 40, 6514, 6440, 12954);
-insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT, CASES, CONTROLS, SUBJECTS) values('samples_26k_mdv3', 'ExSeq_16k', 'mdv3', '26k', 'ExSeq', 'Mixed', 'Root', 'SAMPLE_26k', 50, 10234, 13267, 23501);
+insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT, CASES, CONTROLS, SUBJECTS) values('samples_26k_mdv3', 'ExSeq_26k', 'mdv3', '26k', 'ExSeq', 'Mixed', 'Root', 'SAMPLE_26k', 50, 10234, 13267, 23501);
+insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT, CASES, CONTROLS, SUBJECTS) values('samples_stroke_mdv3', 'ExSeq_stroke', 'mdv5', 'Stroke', 'ExSeq', 'Mixed', 'Root', 'SAMPLE_STROKE', 60, 841, 900, 1741);
 
 -- add in subjects, controls etc
 -- update SAMPLES_DATASET da set da.CASES = 6514, da.CONTROLS = 6440, da.SUBJECTS = 12954 where da.ID = 'samples_13k_mdv2';
@@ -50,6 +51,10 @@ select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type 
     FROM INFORMATION_SCHEMA.COLUMNS info WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_26k'
     and not exists (select PROP from SAMPLES_PROP where PROP = info.column_name);
 
+insert into SAMPLES_PROP
+select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
+    FROM INFORMATION_SCHEMA.COLUMNS info WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_STROKE'
+    and not exists (select PROP from SAMPLES_PROP where PROP = info.column_name);
 
 
 -- PROP_ID
@@ -113,9 +118,23 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'C
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'BMI';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'WHR';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'HDL';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'FAST_GLU';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'FAST_INS';
+
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Lobar_ICH';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Deep_ICH';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'ln_ICH_Volume';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Hemorrhage_Location';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Number_of_Previous_Hemhorrhages';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Hours_from_Symptoms_to_CT';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'History_of_Hypertension';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Site';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'ICH_Status';
+
 
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'SEX';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'ANCESTRY';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'AGE';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Age';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'HEIGHT';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'WEIGHT';
