@@ -1,10 +1,18 @@
 
+
+-- modify the samples tables
+alter table SAMPLE_13k modify column ID varchar(100) primary key;
+alter table SAMPLE_17k modify column ID varchar(100) primary key;
+alter table SAMPLE_26k modify column ID varchar(100) primary key;
+alter table SAMPLE_STROKE modify column ID varchar(100) primary key;
+
+
 -- common table
 -- drop table if exists
 drop table if exists SAMPLES_common_dv1;
 
 -- create table
-create table SAMPLES_common_dv1 (ID text null);
+create table SAMPLES_common_dv1 (ID varchar(100) not null primary key);
 
 -- delete from table
 delete from SAMPLES_common_dv1;
@@ -32,7 +40,7 @@ insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT
 -- insert into SAMPLES_DATASET (ID, EXP, VER, PARENT, TBL, SORT) values('samples_13k_mdv2', 'ExSeq_13k', 'mdv2', 'Root', 'SAMPLE_13k', 40);
 -- insert into SAMPLES_DATASET (ID, EXP, VER, PARENT, TBL, SORT) values('samples_26k_mdv3', 'ExSeq_16k', 'mdv3', 'Root', 'SAMPLE_26k', 50);
 insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT, CASES, CONTROLS, SUBJECTS) values('samples_13k_mdv1', 'ExSeq_13k', 'mdv1', '13k', 'ExSeq', 'Mixed', 'Root', 'SAMPLE_13k', 30, 6514, 6440, 12954);
-insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT, CASES, CONTROLS, SUBJECTS) values('samples_13k_mdv2', 'ExSeq_13k', 'mdv2', '17k', 'ExSeq', 'Mixed', 'Root', 'SAMPLE_17k', 40, 8379, 8478, 16857);
+insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT, CASES, CONTROLS, SUBJECTS) values('samples_17k_mdv2', 'ExSeq_17k', 'mdv2', '17k', 'ExSeq', 'Mixed', 'Root', 'SAMPLE_17k', 40, 8379, 8478, 16857);
 insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT, CASES, CONTROLS, SUBJECTS) values('samples_26k_mdv3', 'ExSeq_26k', 'mdv3', '26k', 'ExSeq', 'Mixed', 'Root', 'SAMPLE_26k', 50, 10234, 13267, 23501);
 insert into SAMPLES_DATASET (ID, EXP, VER, SG, TECH, ANCESTRY, PARENT, TBL, SORT, CASES, CONTROLS, SUBJECTS) values('samples_stroke_mdv5', 'ExSeq_stroke', 'mdv5', 'Stroke', 'ExSeq', 'Mixed', 'Root', 'SAMPLE_STROKE', 60, 841, 900, 1741);
 
@@ -87,7 +95,7 @@ delete from SAMPLES_PROP_ID;
 -- add in the samples rows
 insert into SAMPLES_PROP_ID
     select pr.PROP, sa.ID from SAMPLES_DATASET sa, SAMPLES_PROP pr, INFORMATION_SCHEMA.COLUMNS info
-    where (sa.ID != 'samples_common_dv1' and sa.TBL = info.TABLE_NAME and pr.PROP = info.COLUMN_NAME andf TABLE_SCHEMA = 'dig_qa');
+    where (sa.ID != 'samples_common_dv1' and sa.TBL = info.TABLE_NAME and pr.PROP = info.COLUMN_NAME and TABLE_SCHEMA = 'dig_qa');
     
 insert into SAMPLES_PROP_ID values('samples_common_dv1','ID');
 
@@ -146,6 +154,7 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Age';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'HEIGHT';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'WEIGHT';
 
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP regexp '^C[0-9]';
 
 
 
