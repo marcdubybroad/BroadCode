@@ -174,16 +174,73 @@ update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'Lobar_ICH';
 update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Lobar_ICH_readable';
 update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'Deep_ICH';
 update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Deep_ICH_readable';
-
-
-
-
-
+update SAMPLES_PROP set MEANING = 'COVARIATE, PHENOTYPE' where PROP = 'History_of_Hypertension';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'History_of_Hypertension_readable';
+update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'INR_gt_2';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'INR_gt_2_readable';
+update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'Follow_up_mRS_gt_2';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Follow_up_mRS_gt_2_readable';
+update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'Discharge_mRS_gt_2';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Discharge_mRS_gt_2_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Aspirin';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Aspirin_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Warfarin';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Warfarin_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Statins';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Statins_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Other_Antiplatelet';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Other_Antiplatelet_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'History_of_Diabetes_mellitus';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'History_of_Diabetes_mellitus_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'History_of_Hypercholesterolemia';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'History_of_Hypercholesterolemia_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Coronary_Artery_Disease';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Coronary_Artery_Disease_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'History_of_TIA_Ischemic_Stroke';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'History_of_TIA_Ischemic_Stroke_readable';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'MRI_Available_readable';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Admission_CT_Available_readable';
 
 
 
 
 -- stroke specific filters/covariates
+alter table SAMPLE_STROKE add column MRI_Available_readable varchar(100); 
+update SAMPLE_STROKE set MRI_Available_readable = if((MRI_Available = 1), 'No', if((MRI_Available = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column Admission_CT_Available_readable varchar(100); 
+update SAMPLE_STROKE set Admission_CT_Available_readable = if((Admission_CT_Available = 1), 'No', if((Admission_CT_Available = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column History_of_Diabetes_mellitus_readable varchar(100); 
+update SAMPLE_STROKE set History_of_Diabetes_mellitus_readable = if((History_of_Diabetes_mellitus = 1), 'No', if((History_of_Diabetes_mellitus = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column History_of_Hypercholesterolemia_readable varchar(100); 
+update SAMPLE_STROKE set History_of_Hypercholesterolemia_readable = if((History_of_Hypercholesterolemia = 1), 'No', if((History_of_Hypercholesterolemia = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column Coronary_Artery_Disease_readable varchar(100); 
+update SAMPLE_STROKE set Coronary_Artery_Disease_readable = if((Coronary_Artery_Disease = 1), 'No', if((Coronary_Artery_Disease = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column History_of_TIA_Ischemic_Stroke_readable varchar(100); 
+update SAMPLE_STROKE set History_of_TIA_Ischemic_Stroke_readable = if((History_of_TIA_Ischemic_Stroke = 1), 'No', if((History_of_TIA_Ischemic_Stroke = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column Statins_readable varchar(100); 
+update SAMPLE_STROKE set Statins_readable = if((Statins = 1), 'No', if((Statins = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column Other_Antiplatelet_readable varchar(100); 
+update SAMPLE_STROKE set Other_Antiplatelet_readable = if((Other_Antiplatelet = 1), 'No', if((Other_Antiplatelet = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column Aspirin_readable varchar(100); 
+update SAMPLE_STROKE set Aspirin_readable = if((Aspirin = 1), 'No', if((Aspirin = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column Warfarin_readable varchar(100); 
+update SAMPLE_STROKE set Warfarin_readable = if((Warfarin = 1), 'No', if((Warfarin = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column Follow_up_mRS_gt_2_readable varchar(100); 
+update SAMPLE_STROKE set Follow_up_mRS_gt_2_readable = if((Follow_up_mRS_gt_2 = 1), 'No', if((Follow_up_mRS_gt_2 = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column Discharge_mRS_gt_2_readable varchar(100); 
+update SAMPLE_STROKE set Discharge_mRS_gt_2_readable = if((Discharge_mRS_gt_2 = 1), 'No', if((Discharge_mRS_gt_2 = 2), 'Yes', null));
+
 alter table SAMPLE_STROKE add column ICH_Status_readable varchar(100); 
 update SAMPLE_STROKE set ICH_Status_readable = if((ICH_Status = 1), 'No', if((ICH_Status = 2), 'Yes'), null);
 
@@ -192,6 +249,12 @@ update SAMPLE_STROKE set Lobar_ICH_readable = if((Lobar_ICH = 1), 'No', if((Loba
 
 alter table SAMPLE_STROKE add column Deep_ICH_readable varchar(100); 
 update SAMPLE_STROKE set Deep_ICH_readable = if((Deep_ICH = 1), 'No', if((Deep_ICH = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column History_of_Hypertension_readable varchar(100); 
+update SAMPLE_STROKE set History_of_Hypertension_readable = if((History_of_Hypertension = 1), 'No', if((History_of_Hypertension = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column INR_gt_2_readable varchar(100); 
+update SAMPLE_STROKE set INR_gt_2_readable = if((INR_gt_2 = 1), 'No', if((INR_gt_2 = 2), 'Yes', null));
 
 
 
@@ -202,9 +265,30 @@ SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa'
 SELECT COLUMN_NAME, COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_13k';
 SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_13k';
 
+select * from SAMPLES_PROP_ID where id = 'samples_stroke_mdv5';
 
 select * from SAMPLES_PROP sp, SAMPLES_PROP_ID sprop where sp.PROP = sprop.PROP and sprop.ID = 'samples_26k_mdv3' and lower(sp.MEANING) like '%phenotype%';
 
 select Lobar_ICH, count(ID) from SAMPLE_STROKE group by Lobar_ICH;
+select History_of_Hypertension, count(ID) from SAMPLE_STROKE group by History_of_Hypertension;
+select INR_gt_2, count(ID) from SAMPLE_STROKE group by INR_gt_2;
+select Discharge_mRS_gt_2, count(ID) from SAMPLE_STROKE group by Discharge_mRS_gt_2;
+select Follow_up_mRS_gt_2, count(ID) from SAMPLE_STROKE group by Follow_up_mRS_gt_2;
+select Warfarin, count(ID) from SAMPLE_STROKE group by Warfarin;
+select Aspirin, count(ID) from SAMPLE_STROKE group by Aspirin;
+select Other_Antiplatelet, count(ID) from SAMPLE_STROKE group by Other_Antiplatelet;
+select Statins, count(ID) from SAMPLE_STROKE group by Statins;
+select History_of_Diabetes_mellitus, count(ID) from SAMPLE_STROKE group by History_of_Diabetes_mellitus;
+select History_of_Hypercholesterolemia, count(ID) from SAMPLE_STROKE group by History_of_Hypercholesterolemia;
+select Coronary_Artery_Disease, count(ID) from SAMPLE_STROKE group by Coronary_Artery_Disease;
+select History_of_TIA_Ischemic_Stroke, count(ID) from SAMPLE_STROKE group by History_of_TIA_Ischemic_Stroke;
+
+select MRI_Available, count(ID) from SAMPLE_STROKE group by MRI_Available;
+
+select Admission_CT_Available, count(ID) from SAMPLE_STROKE group by Admission_CT_Available;
+
+select Site, count(ID) from SAMPLE_STROKE group by Site;
+
+select MRI_Available, count(ID) from SAMPLE_STROKE group by MRI_Available;
 
 
