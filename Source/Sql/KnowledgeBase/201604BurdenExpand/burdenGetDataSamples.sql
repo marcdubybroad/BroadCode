@@ -61,22 +61,22 @@ delete from SAMPLES_PROP;
 
 -- add in the samples rows
 insert into SAMPLES_PROP
-select column_name, 'FALSE', 'TRUE', column_name, if(column_type like '%text', 'STRING', if(column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
+select column_name, 'FALSE', 'TRUE', column_name, if(column_type like '%text' or column_type like '%varchar%', 'STRING', if(column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
     FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_13k';
     
 insert into SAMPLES_PROP
-select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
+select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text' or column_type like '%varchar%', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
     FROM INFORMATION_SCHEMA.COLUMNS info WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_17k'
     and not exists (select PROP from SAMPLES_PROP where PROP = info.column_name);
 
     
 insert into SAMPLES_PROP
-select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
+select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text' or column_type like '%varchar%', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
     FROM INFORMATION_SCHEMA.COLUMNS info WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_26k'
     and not exists (select PROP from SAMPLES_PROP where PROP = info.column_name);
 
 insert into SAMPLES_PROP
-select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
+select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text' or column_type like '%varchar%', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
     FROM INFORMATION_SCHEMA.COLUMNS info WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_STROKE'
     and not exists (select PROP from SAMPLES_PROP where PROP = info.column_name);
 
@@ -146,15 +146,12 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'p
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'pheno_SEX';
 
 -- stroke data sets
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Lobar_ICH';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Deep_ICH';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'ln_ICH_Volume';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Hemorrhage_Location';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Number_of_Previous_Hemhorrhages';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Hours_from_Symptoms_to_CT';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'History_of_Hypertension';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Site';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'ICH_Status';
 
 -- mix data sets
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'SEX';
@@ -171,6 +168,33 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'origin';
 
 update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP regexp '^C[0-9]';
 
+update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'ICH_Status';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'ICH_Status_readable';
+update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'Lobar_ICH';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Lobar_ICH_readable';
+update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'Deep_ICH';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Deep_ICH_readable';
+
+
+
+
+
+
+
+
+
+-- stroke specific filters/covariates
+alter table SAMPLE_STROKE add column ICH_Status_readable varchar(100); 
+update SAMPLE_STROKE set ICH_Status_readable = if((ICH_Status = 1), 'No', if((ICH_Status = 2), 'Yes'), null);
+
+alter table SAMPLE_STROKE add column Lobar_ICH_readable varchar(100); 
+update SAMPLE_STROKE set Lobar_ICH_readable = if((Lobar_ICH = 1), 'No', if((Lobar_ICH = 2), 'Yes', null));
+
+alter table SAMPLE_STROKE add column Deep_ICH_readable varchar(100); 
+update SAMPLE_STROKE set Deep_ICH_readable = if((Deep_ICH = 1), 'No', if((Deep_ICH = 2), 'Yes', null));
+
+
+
 
 
 -- scratch
@@ -181,5 +205,6 @@ SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE
 
 select * from SAMPLES_PROP sp, SAMPLES_PROP_ID sprop where sp.PROP = sprop.PROP and sprop.ID = 'samples_26k_mdv3' and lower(sp.MEANING) like '%phenotype%';
 
+select Lobar_ICH, count(ID) from SAMPLE_STROKE group by Lobar_ICH;
 
 
