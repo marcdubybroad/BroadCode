@@ -146,22 +146,18 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'p
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'pheno_SEX';
 
 -- stroke data sets
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'ln_ICH_Volume';
+-- update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'ln_ICH_Volume';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Hemorrhage_Location';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Number_of_Previous_Hemhorrhages';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Hours_from_Symptoms_to_CT';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'History_of_Hypertension';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Site';
 
 -- mix data sets
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'SEX';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'ANCESTRY';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'AGE';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Age';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Age_Orig';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Sex_Orig';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Race';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Ethnicity';
+-- update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Age_Orig';
+-- update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Sex_Orig';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'HEIGHT';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'WEIGHT';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'origin';
@@ -200,6 +196,12 @@ update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'History_of_TIA_Ische
 update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'History_of_TIA_Ischemic_Stroke_readable';
 update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'MRI_Available_readable';
 update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Admission_CT_Available_readable';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'SEX_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'SEX';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Race';
+update SAMPLES_PROP set MEANING = 'FILTER, CATEGORICAL' where PROP = 'Race_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Ethnicity';
+update SAMPLES_PROP set MEANING = 'FILTER, CATEGORICAL' where PROP = 'Ethnicity_readable';
 
 
 
@@ -256,6 +258,15 @@ update SAMPLE_STROKE set History_of_Hypertension_readable = if((History_of_Hyper
 alter table SAMPLE_STROKE add column INR_gt_2_readable varchar(100); 
 update SAMPLE_STROKE set INR_gt_2_readable = if((INR_gt_2 = 1), 'No', if((INR_gt_2 = 2), 'Yes', null));
 
+alter table SAMPLE_STROKE add column SEX_readable varchar(100); 
+update SAMPLE_STROKE set SEX_readable = if((SEX = 1), 'Male', if((SEX = 2), 'Female', null));
+
+alter table SAMPLE_STROKE add column Race_readable varchar(100); 
+update SAMPLE_STROKE set Race_readable = if((Race = 1), 'European', if((Race = 2), 'Female', if((Race = 3), 'East Asian', if((Race = 4), 'African', 'Hispanic'))));
+
+alter table SAMPLE_STROKE add column Ethnicity_readable varchar(100); 
+update SAMPLE_STROKE set Ethnicity_readable = if((Ethnicity = 1), 'European', if((Ethnicity = 2), 'Non European', null));
+
 
 
 
@@ -282,13 +293,15 @@ select History_of_Diabetes_mellitus, count(ID) from SAMPLE_STROKE group by Histo
 select History_of_Hypercholesterolemia, count(ID) from SAMPLE_STROKE group by History_of_Hypercholesterolemia;
 select Coronary_Artery_Disease, count(ID) from SAMPLE_STROKE group by Coronary_Artery_Disease;
 select History_of_TIA_Ischemic_Stroke, count(ID) from SAMPLE_STROKE group by History_of_TIA_Ischemic_Stroke;
-
 select MRI_Available, count(ID) from SAMPLE_STROKE group by MRI_Available;
-
 select Admission_CT_Available, count(ID) from SAMPLE_STROKE group by Admission_CT_Available;
+select Site, count(ID) from SAMPLE_STROKE group by Site;
+select SEX, count(ID) from SAMPLE_STROKE group by SEX;
+
+select Race, count(ID) from SAMPLE_STROKE group by Race;
+
+select Ethnicity, count(ID) from SAMPLE_STROKE group by Ethnicity;
 
 select Site, count(ID) from SAMPLE_STROKE group by Site;
-
-select MRI_Available, count(ID) from SAMPLE_STROKE group by MRI_Available;
 
 
