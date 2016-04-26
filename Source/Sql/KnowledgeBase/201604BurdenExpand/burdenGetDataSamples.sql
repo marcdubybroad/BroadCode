@@ -164,6 +164,12 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'origin';
 
 update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP regexp '^C[0-9]';
 
+
+-- t2d specific readable fiedls
+update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'T2D';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'T2D_readable';
+
+-- stroke specific readable fields
 update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'ICH_Status';
 update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'ICH_Status_readable';
 update SAMPLES_PROP set MEANING = 'PHENOTYPE' where PROP = 'Lobar_ICH';
@@ -202,6 +208,16 @@ update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Race';
 update SAMPLES_PROP set MEANING = 'FILTER, CATEGORICAL' where PROP = 'Race_readable';
 update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Ethnicity';
 update SAMPLES_PROP set MEANING = 'FILTER, CATEGORICAL' where PROP = 'Ethnicity_readable';
+
+
+
+
+
+
+
+-- t2d mdv2/17k specific filters/covariates
+alter table SAMPLE_17k add column T2D_readable varchar(100); 
+update SAMPLE_17k set T2D_readable = if((T2D = 1), 'No', if((T2D = 2), 'Yes', null));
 
 
 
@@ -308,7 +324,8 @@ select Site, count(ID) from SAMPLE_STROKE group by Site;
 
 
 -- history of manual fixes
--- 20160426 tuesday
+-- 20160426 tuesday; remove erroneous column from t2d mdv2 table
 delete from SAMPLES_PROP_ID where PROP = 'ICH_Status_readable' and ID = 'samples_17k_mdv2';
 alter table SAMPLE_17k drop column ICH_Status_readable;
+
 
