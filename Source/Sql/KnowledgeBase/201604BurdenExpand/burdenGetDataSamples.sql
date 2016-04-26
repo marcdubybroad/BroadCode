@@ -146,7 +146,7 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'p
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'pheno_SEX';
 
 -- stroke data sets
--- update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'ln_ICH_Volume';
+update SAMPLES_PROP set MEANING = 'NULL' where PROP = 'ln_ICH_Volume';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Hemorrhage_Location';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Number_of_Previous_Hemhorrhages';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Hours_from_Symptoms_to_CT';
@@ -156,8 +156,8 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'S
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'ANCESTRY';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'AGE';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Age';
--- update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Age_Orig';
--- update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Sex_Orig';
+update SAMPLES_PROP set MEANING = 'NULL' where PROP = 'Age_Orig';
+update SAMPLES_PROP set MEANING = 'NULL' where PROP = 'Sex_Orig';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'HEIGHT';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'WEIGHT';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'origin';
@@ -262,10 +262,10 @@ alter table SAMPLE_STROKE add column SEX_readable varchar(100);
 update SAMPLE_STROKE set SEX_readable = if((SEX = 1), 'Male', if((SEX = 2), 'Female', null));
 
 alter table SAMPLE_STROKE add column Race_readable varchar(100); 
-update SAMPLE_STROKE set Race_readable = if((Race = 1), 'European', if((Race = 2), 'Female', if((Race = 3), 'East Asian', if((Race = 4), 'African', 'Hispanic'))));
+update SAMPLE_STROKE set Race_readable = if((Race = 1), 'White', if((Race = 2), 'Black', if((Race = 3), 'Asian', if((Race = 4), 'Hispanic', 'Other'))));
 
 alter table SAMPLE_STROKE add column Ethnicity_readable varchar(100); 
-update SAMPLE_STROKE set Ethnicity_readable = if((Ethnicity = 1), 'European', if((Ethnicity = 2), 'Non European', null));
+update SAMPLE_STROKE set Ethnicity_readable = if((Ethnicity = 1), 'Hispanic/Latino', if((Ethnicity = 2), 'Not Hispanic/Latino', null));
 
 
 

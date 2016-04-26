@@ -5,3 +5,23 @@ Screen notes:
 - to scroll, CTRL-A, [
 
 
+Mysql commands:
+---------------
+mysqldump --host=<host_name> --user=<db_user> -p <db_name> `cat 20150625dbTables.sql` > 20150625dbDump.sql
+
+mysqldump -u [user] -p[password] databasename `echo "show tables like 'table_name_%';" | mysql -u[user] -p[password] databasename | sed '/Tables_in/d'` > [target_file]
+
+show tables like 'SAMPLE%';
+
+SAMPLE                     
+SAMPLES_DATASET            
+SAMPLES_ID_PH              
+SAMPLES_PROP               
+SAMPLES_PROP_ID            
+SAMPLES_PROP_ID_PH         
+SAMPLES_common_dv1         
+SAMPLE_13k                 
+SAMPLE_17k                 
+SAMPLE_26k                 
+SAMPLE_26kbackup    
+SAMPLE_STROKE
