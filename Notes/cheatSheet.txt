@@ -13,6 +13,14 @@ mysqldump -u [user] -p[password] databasename `echo "show tables like 'table_nam
 
 show tables like 'SAMPLE%';
 
+
+
+
+
+
+
+Burden tables to back up:
+-------------------------
 SAMPLE                     
 SAMPLES_DATASET            
 SAMPLES_ID_PH              
@@ -25,3 +33,11 @@ SAMPLE_17k
 SAMPLE_26k                 
 SAMPLE_26kbackup    
 SAMPLE_STROKE
+
+DATASET
+ID_PH
+PH
+PROP
+PROP_ID
+PROP_ID_PH
+common_dv1

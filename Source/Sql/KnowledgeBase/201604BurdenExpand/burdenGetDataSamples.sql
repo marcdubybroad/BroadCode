@@ -141,7 +141,7 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'W
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'HIPC';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'FAST_GLU';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'FAST_INS';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'T2D';
+update SAMPLES_PROP set MEANING = 'FILTER, PHENOTYPE' where PROP = 'T2D';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'pheno_T2D';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'pheno_SEX';
 
@@ -304,4 +304,11 @@ select Ethnicity, count(ID) from SAMPLE_STROKE group by Ethnicity;
 
 select Site, count(ID) from SAMPLE_STROKE group by Site;
 
+
+
+
+-- history of manual fixes
+-- 20160426 tuesday
+delete from SAMPLES_PROP_ID where PROP = 'ICH_Status_readable' and ID = 'samples_17k_mdv2';
+alter table SAMPLE_17k drop column ICH_Status_readable;
 
