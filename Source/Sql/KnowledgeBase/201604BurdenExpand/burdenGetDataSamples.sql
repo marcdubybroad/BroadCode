@@ -61,14 +61,14 @@ delete from SAMPLES_PROP;
 
 -- add in the samples rows
 insert into SAMPLES_PROP
-select column_name, 'FALSE', 'TRUE', column_name, if(column_type like '%text' or column_type like '%varchar%', 'STRING', if(column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
-    FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_13k';
+select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text' or column_type like '%varchar%', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
+    FROM INFORMATION_SCHEMA.COLUMNS info WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_STROKE'
+    and not exists (select PROP from SAMPLES_PROP where PROP = info.column_name);
     
 insert into SAMPLES_PROP
 select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text' or column_type like '%varchar%', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
     FROM INFORMATION_SCHEMA.COLUMNS info WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_17k'
     and not exists (select PROP from SAMPLES_PROP where PROP = info.column_name);
-
     
 insert into SAMPLES_PROP
 select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text' or column_type like '%varchar%', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
@@ -77,8 +77,9 @@ select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type 
 
 insert into SAMPLES_PROP
 select info.column_name, 'FALSE', 'TRUE', info.column_name, if(info.column_type like '%text' or column_type like '%varchar%', 'STRING', if(info.column_type = 'double', 'FLOAT', 'INTEGER')), 'TRUE', 'TRUE', 60, 'NULL'
-    FROM INFORMATION_SCHEMA.COLUMNS info WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_STROKE'
+    FROM INFORMATION_SCHEMA.COLUMNS info WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_13k'
     and not exists (select PROP from SAMPLES_PROP where PROP = info.column_name);
+    
 
 
 -- PROP_ID
@@ -124,6 +125,10 @@ create table SAMPLES_PROP_ID_PH select * from PROP_ID_PH;
 delete from SAMPLES_PROP_ID_PH;
 
 
+-- add in sort
+update SAMPLES_PROP set SORT = 1, PROP_TYPE = 'FLOAT' where PROP = 'Age';
+update SAMPLES_PROP set SORT = 2, PROP_TYPE = 'INTEGER' where PROP = 'SEX';
+
 
 
 
@@ -154,8 +159,8 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'S
 
 -- mix data sets
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'ANCESTRY';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'AGE';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Age';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, DEFAULT_COVARIATE' where PROP = 'AGE';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, DEFAULT_COVARIATE' where PROP = 'Age';
 update SAMPLES_PROP set MEANING = 'NULL' where PROP = 'Age_Orig';
 update SAMPLES_PROP set MEANING = 'NULL' where PROP = 'Sex_Orig';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'HEIGHT';
@@ -163,6 +168,10 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'WEIGHT';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'origin';
 
 update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP regexp '^C[0-9]';
+update SAMPLES_PROP set SORT = 3, MEANING = 'COVARIATE, DEFAULT_COVARIATE' where PROP = 'C1';
+update SAMPLES_PROP set SORT = 4, MEANING = 'COVARIATE, DEFAULT_COVARIATE' where PROP = 'C2';
+update SAMPLES_PROP set SORT = 5, MEANING = 'COVARIATE, DEFAULT_COVARIATE' where PROP = 'C3';
+update SAMPLES_PROP set SORT = 6, MEANING = 'COVARIATE, DEFAULT_COVARIATE' where PROP = 'C4';
 
 
 -- t2d specific readable fiedls
@@ -203,7 +212,7 @@ update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'History_of_TIA_Ischemic
 update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'MRI_Available_readable';
 update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Admission_CT_Available_readable';
 update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'SEX_readable';
-update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'SEX';
+update SAMPLES_PROP set MEANING = 'COVARIATE, DEFAULT_COVARIATE' where PROP = 'SEX';
 update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Race';
 update SAMPLES_PROP set MEANING = 'FILTER, CATEGORICAL' where PROP = 'Race_readable';
 update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Ethnicity';
