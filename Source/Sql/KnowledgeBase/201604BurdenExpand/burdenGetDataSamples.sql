@@ -146,7 +146,7 @@ update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'W
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'HIPC';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'FAST_GLU';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'FAST_INS';
-update SAMPLES_PROP set MEANING = 'FILTER, PHENOTYPE' where PROP = 'T2D';
+update SAMPLES_PROP set MEANING = 'FILTER, PHENOTYPE, DICHOTOMOUS' where PROP = 'T2D';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'pheno_T2D';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'pheno_SEX';
 
@@ -155,7 +155,7 @@ update SAMPLES_PROP set MEANING = 'NULL' where PROP = 'ln_ICH_Volume';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Hemorrhage_Location';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Number_of_Previous_Hemhorrhages';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Hours_from_Symptoms_to_CT';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER, PHENOTYPE' where PROP = 'Site';
+update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'Site';
 
 -- mix data sets
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'ANCESTRY';
@@ -217,6 +217,10 @@ update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Race';
 update SAMPLES_PROP set MEANING = 'FILTER, CATEGORICAL' where PROP = 'Race_readable';
 update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Ethnicity';
 update SAMPLES_PROP set MEANING = 'FILTER, CATEGORICAL' where PROP = 'Ethnicity_readable';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Number_of_Previous_Hemhorrhages_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Number_of_Previous_Hemhorrhages';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'Hemorrhage_Location_readable';
+update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP = 'Hemorrhage_Location';
 
 
 
@@ -292,6 +296,12 @@ update SAMPLE_STROKE set Race_readable = if((Race = 1), 'White', if((Race = 2), 
 alter table SAMPLE_STROKE add column Ethnicity_readable varchar(100); 
 update SAMPLE_STROKE set Ethnicity_readable = if((Ethnicity = 1), 'Hispanic/Latino', if((Ethnicity = 2), 'Not Hispanic/Latino', null));
 
+alter table SAMPLE_STROKE add column Number_of_Previous_Hemhorrhages_readable int(11); 
+update SAMPLE_STROKE set Number_of_Previous_Hemhorrhages_readable = if((Number_of_Previous_Hemhorrhages = -9), null, Number_of_Previous_Hemhorrhages);
+
+alter table SAMPLE_STROKE add column Hemorrhage_Location_readable varchar(100); 
+update SAMPLE_STROKE set Hemorrhage_Location_readable = if((Hemorrhage_Location = '-9'), null, Hemorrhage_Location);
+
 
 
 
@@ -301,7 +311,7 @@ SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa'
 SELECT COLUMN_NAME, COLUMN_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_13k';
 SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'dig_qa' AND TABLE_NAME = 'SAMPLE_13k';
 
-select * from SAMPLES_PROP_ID where id = 'samples_stroke_mdv5';
+select * from SAMPLES_PROP_ID where id = 'samples_stroke_mdv5' order by PROP;
 
 select * from SAMPLES_PROP sp, SAMPLES_PROP_ID sprop where sp.PROP = sprop.PROP and sprop.ID = 'samples_26k_mdv3' and lower(sp.MEANING) like '%phenotype%';
 
@@ -322,12 +332,13 @@ select MRI_Available, count(ID) from SAMPLE_STROKE group by MRI_Available;
 select Admission_CT_Available, count(ID) from SAMPLE_STROKE group by Admission_CT_Available;
 select Site, count(ID) from SAMPLE_STROKE group by Site;
 select SEX, count(ID) from SAMPLE_STROKE group by SEX;
+select Number_of_Previous_Hemhorrhages, count(ID) from SAMPLE_STROKE group by Number_of_Previous_Hemhorrhages;
+select Hemorrhage_Location, count(ID) from SAMPLE_STROKE group by Hemorrhage_Location;
 
 select Race, count(ID) from SAMPLE_STROKE group by Race;
 
 select Ethnicity, count(ID) from SAMPLE_STROKE group by Ethnicity;
 
-select Site, count(ID) from SAMPLE_STROKE group by Site;
 
 
 

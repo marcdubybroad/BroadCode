@@ -4,7 +4,7 @@ Screen notes:
 -------------
 - to scroll, CTRL-A, [
 - to detach, CTRL-A, CTRL-D
-
+- to reattach, 
 
 
 Mysql commands:

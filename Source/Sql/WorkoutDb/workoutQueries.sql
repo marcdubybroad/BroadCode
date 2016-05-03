@@ -8,7 +8,7 @@
 
 
 -- select sum of rowing related workouts
-select count(workout.workout_id), sum(activity.row) + sum(activity.row), period.name_text
+select count(workout.workout_id), sum(activity.erg) + sum(activity.row), period.name_text
 from wkt_workout workout, wkt_activity activity, wkt_day wday, wkt_week week, wkt_period period, wkt_year wyear
 where workout.day_id = wday.day_id
     and activity.workout_id = workout.workout_id
