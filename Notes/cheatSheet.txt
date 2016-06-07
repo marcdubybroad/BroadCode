@@ -5,7 +5,17 @@ Screen notes:
 - to scroll, CTRL-A, [
 - to detach, CTRL-A, CTRL-D
 - to reattach, 
+- to name a screen, screen -s <name>
+  - to rename afterwards, screen -X sessionname foobars
 
+Git:
+----
+- git stash
+  - git stash pop (to apply to code and delete stashed changes)
+
+- git clone for VMs/diguserx  
+  - git clone git@github.com:broadinstitute/dig-genome-store.git
+  
 
 Mysql commands:
 ---------------
@@ -16,9 +26,22 @@ mysqldump -u [user] -p[password] databasename `echo "show tables like 'table_nam
 show tables like 'SAMPLE%';
 
 
+Stats:
+------
+plink --bfile  /humgen/atgu1/fs03/weisburd/1kg/ALL_chr8 --r2 dprime --ld-snp rs13266634 --ld-window-kb 1000 --ld-window-r2 0.6 --ld-window 99999 --out test.output 
+
+https://bootstrap.pypa.io/get-pip.py
 
 
+REST servers:
+-------------
 
+Burden test mounts:
+-------------------
+ln -s /Volumes/humgen_diabetes/users/dig/analysis_engine/CollapsedPathwayBurdenTestForUnitTests/BurdenFiles BurdenTestFiles
+smb://argon/humgen_diabetes
+
+R_HOME = /usr/local/Cellar/r/3.3.0/R.framework/Versions/3.3/Resources/
 
 
 Burden tables to back up:

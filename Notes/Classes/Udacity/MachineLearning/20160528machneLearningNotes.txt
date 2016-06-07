@@ -1,0 +1,14 @@
+
+
+- scratter plotes
+  - decision surface
+    - when straight line, it is seen as linear
+    
+- naive Bayes
+  - algortigh to find boundary surface
+  - pythin library, sklearn
+    - http://scikit-learn.org/stable/modules/naive_bayes.html
+    - http://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html
+  - always keep 10% of yuor training data as test data
+  
+  
