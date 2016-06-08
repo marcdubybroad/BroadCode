@@ -165,7 +165,7 @@ update SAMPLES_PROP set MEANING = 'NULL' where PROP = 'Age_Orig';
 update SAMPLES_PROP set MEANING = 'NULL' where PROP = 'Sex_Orig';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'HEIGHT';
 update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'WEIGHT';
-update SAMPLES_PROP set MEANING = 'COVARIATE, FILTER' where PROP = 'origin';
+update SAMPLES_PROP set MEANING = 'FILTER' where PROP = 'origin';
 
 update SAMPLES_PROP set MEANING = 'COVARIATE' where PROP regexp '^C[0-9]';
 update SAMPLES_PROP set SORT = 3, MEANING = 'COVARIATE, DEFAULT_COVARIATE' where PROP = 'C1';
